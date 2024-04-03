@@ -23,17 +23,25 @@ void setup() {
   throttle.write(90);   // sets mid throttle
 }
 
+int previousPower = 0;
+
 void loop() {
   if (Serial.available() > 0) {
     String incomingMessage = Serial.readStringUntil('\n');
 
     if (incomingMessage.startsWith("throttle:")) {
       int power = incomingMessage.substring(9).toInt();
+      // If the new power is significantly lower than the previous power, decrease it gradually
+      if (power < previousPower - 2) { // Change 10 to the maximum amount you want the power to decrease each time
+        power = previousPower - 2; // Again, change 10 to the maximum decrease
+      }
+
       throttle.write(power);
+      previousPower = power;
     } 
     else if (incomingMessage.startsWith("servo:")) {
       int angle = incomingMessage.substring(6).toInt();
-      servo.write(angle);
+      steering.write(angle);
     }
   }
 }

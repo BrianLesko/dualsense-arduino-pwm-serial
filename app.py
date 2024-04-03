@@ -68,20 +68,28 @@ def main():
         if abs(ds.R2) > 4:
             power = ds.R2
 
-        #power = int(np.interp(power,[-255,255],[50,130])) # calibrated at 
-        f = 30
-        power = int(np.interp(power,[-255,255],[50+f,130-f]))
+        # Joystick control 
+        angle = 95
+        if abs(ds.LX) > 0.1:
+            with Status: st.write(ds.LX)
+            angle = int(np.interp(ds.LX,[-180,180],[55,130]))
+
+        # Power Calibration
+        power = int(np.interp(power,[-255,255],[50,120]))+5 # calibrated at 
         with Sending: st.write(f"Sending: {power}")
 
+        # Steering 
+
         # Send the command via serial message 
-        with Status: st.write("Sending Serial")
+        #with Status: st.write("Sending Serial")
         try:
             my_arduino.send('throttle:'+str(power))
+            my_arduino.send('servo:'+str(angle))
         except Exception as e:
             with Message: 
                 st.write("Error occurred while sending the serial signal.")
 
-        with Status: st.write("Replotting")
+        #with Status: st.write("Replotting")
         # Update a plot with the current Input signal, Power.
         with image_spot:
             data.set_data([0], [power])  # Provide sequences for x and y coordinates
