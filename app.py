@@ -78,8 +78,6 @@ def main():
         power = int(np.interp(power,[-255,255],[50,120]))+5 # calibrated at 
         with Sending: st.write(f"Sending: {power}")
 
-        # Steering 
-
         # Send the command via serial message 
         #with Status: st.write("Sending Serial")
         try:
