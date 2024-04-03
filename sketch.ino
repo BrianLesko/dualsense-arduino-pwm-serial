@@ -1,4 +1,4 @@
-//Test Routine Program - By Stezipoo
+// Brian Lesko 
 
 #include <Servo.h>
 
@@ -32,10 +32,13 @@ void loop() {
     if (incomingMessage.startsWith("throttle:")) {
       int power = incomingMessage.substring(9).toInt();
       // If the new power is significantly lower than the previous power, decrease it gradually
-      if (power < previousPower - 2) { // Change 10 to the maximum amount you want the power to decrease each time
-        power = previousPower - 2; // Again, change 10 to the maximum decrease
+      if (power < previousPower - 2) { 
+        power = previousPower - 2; 
       }
-
+      // If the new power is significantly higher than the previous power, increase it gradually
+      else if (power > previousPower + 2) { 
+        power = previousPower + 2;
+      }
       throttle.write(power);
       previousPower = power;
     } 
@@ -44,28 +47,4 @@ void loop() {
       steering.write(angle);
     }
   }
-}
- 
- void goLeft(){  // turn left, then go foward and stop
-  steering.write(left);  // turn left
-  delay(10);
-  digitalWrite(ledPin, HIGH);
-  delay(500);
-  throttle.write(120);  // go forward 
-  delay(500);
-  throttle.write(90);
-  digitalWrite(ledPin, LOW);
-  delay(2000);
-}
-  
-void goRight(){  // turn right, then go backward and stop
-  steering.write(right);  // turn right
-  delay(10);
-  digitalWrite(ledPin, HIGH);
-  delay(500);
-  throttle.write(60);  // go backward
-  delay(500);
-  throttle.write(90);
-  digitalWrite(ledPin, LOW);
-  delay(2000);
 }
