@@ -68,8 +68,9 @@ def main():
         if abs(ds.R2) > 4:
             power = ds.R2
 
-        f = 24
-        power = int(np.interp(power,[-255,255],[50+f,120-f]))
+        #power = int(np.interp(power,[-255,255],[50,130])) # calibrated at 
+        f = 30
+        power = int(np.interp(power,[-255,255],[50+f,130-f]))
         with Sending: st.write(f"Sending: {power}")
 
         # Send the command via serial message 

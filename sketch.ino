@@ -24,12 +24,12 @@ void setup() {
 }
 
 void loop() {
-  //goLeft();
-  //goRight();
   if (Serial.available() > 0) {
-    
+    //String string = Serial.readString();
+    //if (string.startsWith("throttle:")) {
     int power = Serial.parseInt();
     throttle.write(power);
+   //}
   }
 }
  
