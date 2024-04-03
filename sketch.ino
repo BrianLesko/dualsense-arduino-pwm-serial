@@ -25,11 +25,16 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-    //String string = Serial.readString();
-    //if (string.startsWith("throttle:")) {
-    int power = Serial.parseInt();
-    throttle.write(power);
-   //}
+    String incomingMessage = Serial.readStringUntil('\n');
+
+    if (incomingMessage.startsWith("throttle:")) {
+      int power = incomingMessage.substring(9).toInt();
+      throttle.write(power);
+    } 
+    else if (incomingMessage.startsWith("servo:")) {
+      int angle = incomingMessage.substring(6).toInt();
+      servo.write(angle);
+    }
   }
 }
  
